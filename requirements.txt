@@ -1,0 +1,2 @@
+# Optional for source users; included in the distributed Windows EXE.
+PyMySQL[rsa]==1.2.4

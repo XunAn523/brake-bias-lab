@@ -1,0 +1,3 @@
+-r requirements.txt
+# Windows packaging
+PyInstaller==6.22.3
