@@ -279,11 +279,13 @@ class MySQLBackupClient:
             raise BackupError("备份编号无效。")
         def operation(connection):
             with connection.cursor() as cursor:
-                cursor.execute("SELECT " + ",".join(METADATA_COLUMNS) + " FROM bbl_backups WHERE backup_id=%s", (backup_id,))
-                row = cursor.fetchone()
-                if row is None:
+                cursor.execute("SELECT " + ",".join(METADATA_COLUMNS)
+                               + " FROM bbl_backups WHERE backup_id=%s LIMIT 1", (backup_id,))
+                # SSCursor must consume EOF before the next SQL statement.
+                rows = cursor.fetchall()
+                if not rows:
                     raise BackupError("该备份已不存在，请刷新列表。")
-                metadata = dict(zip(METADATA_COLUMNS, row))
+                metadata = dict(zip(METADATA_COLUMNS, rows[0]))
                 size, chunks = metadata["byte_count"], metadata["chunk_count"]
                 if (metadata["format_version"] != BACKUP_FORMAT or type(size) is not int
                         or not 0 < size <= MAX_BACKUP_BYTES or type(chunks) is not int

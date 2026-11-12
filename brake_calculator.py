@@ -29,7 +29,7 @@ MODES = {
     "full": "完整参数",
 }
 KINDS = {"fixed": "对向固定卡钳", "floating": "单侧活塞浮动卡钳"}
-APP_VERSION = "1.2.0"
+APP_VERSION = "1.2.1"
 
 
 @dataclass
